@@ -13,7 +13,8 @@ mongoose
       authSource: "admin"
     },
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   })
   .catch(console.log);
 

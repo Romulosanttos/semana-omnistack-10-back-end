@@ -1,5 +1,6 @@
 const axios = require("axios");
 const Dev = require("../models/Dev");
+const parseStringAsArray = require("../utils/parseStringAsArray");
 
 module.exports = {
   async index(req, res) {
@@ -11,7 +12,6 @@ module.exports = {
 
     let dev = await Dev.findOne({ github_username });
     if (!dev) {
-      const techsArray = techs.split(",").map(tech => tech.trim());
       const location = {
         type: "Point",
         coordinates: [longitude, latitude]
@@ -27,11 +27,17 @@ module.exports = {
         name,
         avatar_url,
         bio,
-        techs: techsArray,
+        techs: parseStringAsArray(techs),
         location
       });
     }
 
     return res.json(dev);
+  },
+  async update(req, res) {
+    return res.json({ message: "update" });
+  },
+  async destroy(req, res) {
+    return res.json({ message: "destroy" });
   }
 };
