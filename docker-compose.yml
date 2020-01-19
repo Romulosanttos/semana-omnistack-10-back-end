@@ -4,7 +4,7 @@ services:
     container_name: backend
     build: .
     ports:
-      - "3000:3000"
+      - "3333:3000"
     command: npm run dev
     volumes:
       - .:/home/app/
