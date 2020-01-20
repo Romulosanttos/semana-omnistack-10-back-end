@@ -10,6 +10,9 @@ services:
       - .:/home/app/
     links:
       - mongo
+      - redis
+    environment:
+      - REDIS_URL=redis://cache
   mongo:
     container_name: mongoDB_dev
     image: mongo
@@ -18,3 +21,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: omnistack
       MONGO_INITDB_ROOT_PASSWORD: omnistack
+
+  redis:
+    image: redis
+    container_name: cache
+    expose:
+      - 6379

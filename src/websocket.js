@@ -1,6 +1,7 @@
 const socketio = require("socket.io");
 const parseStringAsArray = require("./utils/parseStringAsArray");
 const calculateDistance = require("./utils/calculateDistance");
+const redisClient = require("./utils/redis-client");
 
 const connections = [];
 let io;
@@ -11,6 +12,18 @@ exports.setupWebsocket = server => {
   io.on("connection", socket => {
     const { latitude, longitude, techs } = socket.handshake.query;
 
+    redisClient.setAsync(
+      socket.id,
+      JSON.stringify({
+        id: socket.id,
+        techs: parseStringAsArray(techs),
+        coordinates: {
+          latitude: Number(latitude),
+          longitude: Number(longitude)
+        }
+      })
+    );
+    redisClient.expireAsync(socket.id, 120);
     connections.push({
       id: socket.id,
       techs: parseStringAsArray(techs),
